@@ -1,127 +1,134 @@
-# Auditoria DVWA - fmv001
+<div align="center">
 
-Aplicacion web SPA (React + Vite) que renderiza el informe tecnico de una
-auditoria de seguridad sobre DVWA. Cada seccion del informe vive como un
-archivo Markdown dentro de `docs_fmv001/` y se monta dinamicamente con
-`react-markdown`. La matriz de riesgo es un mapa de calor **interactivo** con
-logica real de clasificacion.
+# 🔐 Auditoría de Seguridad Web — DVWA
 
-## 1. Estructura
+**TI3034 · Fundamentos de Seguridad de la Información · INACAP Valparaíso**
+
+[![Vercel](https://img.shields.io/badge/Vercel-Desplegado-00f5d4?style=for-the-badge&logo=vercel&logoColor=black)](https://auditoria-fundamentos-de-la-segurid.vercel.app/)
+[![React](https://img.shields.io/badge/React-18-61dafb?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-5-646cff?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![OWASP](https://img.shields.io/badge/OWASP-Top%2010-ff4d6d?style=for-the-badge)](https://owasp.org/www-project-top-ten/)
+
+<br/>
+
+### 🌐 [Ver presentación en vivo →](https://auditoria-fundamentos-de-la-segurid.vercel.app/)
+
+<br/>
+
+</div>
+
+---
+
+## 📋 Información del proyecto
+
+| Campo | Detalle |
+|:---|:---|
+| 👩‍💻 **Estudiante** | Fernanda MV |
+| 🏫 **Institución** | INACAP Valparaíso |
+| 👨‍🏫 **Docente** | Rubén Schnettler |
+| 📚 **Asignatura** | TI3034 — Fundamentos de Seguridad de la Información |
+| 🎯 **Entorno auditado** | DVWA — Damn Vulnerable Web Application |
+| ⚖️ **Ponderación** | 60% nota final (30% Entrega A + 30% Entrega B) |
+
+---
+
+## 🚨 Hallazgos principales
+
+| ID | Vulnerabilidad | CVSS | Severidad | Activo afectado |
+|:---:|:---|:---:|:---:|:---|
+| H-01 | SQL Injection | **9.1** | 🔴 Crítico | BD DVWA |
+| H-02 | Command Injection | **9.8** | 🔴 Crítico | Servidor App |
+| H-03 | XSS Reflected | **6.1** | 🟠 Alto | Navegador / Sesión |
+| H-04 | Falta de CSP | 5.4 | 🟡 Medio | Frontend React |
+| H-05 | Cookies sin HttpOnly | 5.3 | 🟡 Medio | Cookies sesión |
+
+---
+
+## 📑 Contenido del informe
+
+| # | Sección | Rúbrica |
+|:---:|:---|:---:|
+| 01 | [Resumen ejecutivo](https://auditoria-fundamentos-de-la-segurid.vercel.app/resumen) | A |
+| 02 | [SQL Injection — CVSS 9.1](https://auditoria-fundamentos-de-la-segurid.vercel.app/sqli) | 3.1.1 |
+| 03 | [XSS Reflected — CVSS 6.1](https://auditoria-fundamentos-de-la-segurid.vercel.app/xss) | 3.1.1 |
+| 04 | [Command Injection — CVSS 9.8](https://auditoria-fundamentos-de-la-segurid.vercel.app/comandos) | 3.1.1 |
+| 05 | [Inventario de activos](https://auditoria-fundamentos-de-la-segurid.vercel.app/activos) | 3.1.2 |
+| 06 | [Matriz de riesgo 5×5](https://auditoria-fundamentos-de-la-segurid.vercel.app/matriz) | 3.1.3 |
+| 07 | [Controles OWASP + NIST](https://auditoria-fundamentos-de-la-segurid.vercel.app/controles) | 3.1.4 + 3.1.5 |
+| 08 | [Recuperación ante desastres](https://auditoria-fundamentos-de-la-segurid.vercel.app/recuperacion) | 3.1.6 |
+| 09 | [Prompts y uso de IA](https://auditoria-fundamentos-de-la-segurid.vercel.app/prompts) | Transversal |
+
+---
+
+## 🛠️ Stack tecnológico
 
 ```
-auditoria_fmv001/
-|-- docs_fmv001/
-|   |-- 01_resumen_fmv001.md
-|   |-- 02_sqli_fmv001.md
-|   |-- 03_xss_fmv001.md
-|   |-- 04_comandos_fmv001.md
-|   |-- 05_activos_fmv001.md
-|   |-- 06_matriz_fmv001.md
-|   |-- 07_controles_fmv001.md
-|   |-- 08_recuperacion_fmv001.md
-|   |-- 09_prompts_fmv001.md
-|   `-- img_fmv001/
-|       |-- sqli_fmv001.png
-|       |-- xss_fmv001.png
-|       `-- comandos_fmv001.png
-|-- src/
-|   |-- components/
-|   |   |-- MarkdownRenderer.jsx
-|   |   |-- Resumen.jsx
-|   |   |-- InyeccionSQL.jsx
-|   |   |-- XSS.jsx
-|   |   |-- Comandos.jsx
-|   |   |-- Activos.jsx
-|   |   |-- Matriz.jsx
-|   |   |-- Controles.jsx
-|   |   |-- Recuperacion.jsx
-|   |   `-- Prompts.jsx
-|   |-- App.jsx
-|   |-- main.jsx
-|   `-- styles.css
-|-- index.html
-|-- package.json
-|-- vite.config.js
-`-- vercel.json
+Frontend    →  React 18 + Vite 5
+Deploy      →  Vercel (CI/CD automático desde GitHub)
+PDF Export  →  html2canvas + jsPDF
+Auditoría   →  DVWA (PHP + MySQL)
 ```
 
-> Para personalizar el identificador (por defecto `fmv001`):
-> 1. Renombra la carpeta `auditoria_fmv001` -> `auditoria_<aaa><nnn>`.
-> 2. Renombra `docs_fmv001` -> `docs_<aaa><nnn>` (y `img_fmv001` dentro).
-> 3. Renombra los archivos `01_resumen_fmv001.md`, `02_sqli_fmv001.md`, etc.
-> 4. Actualiza los imports en cada componente y la constante `SECTIONS` en
->    `src/App.jsx` si anades nuevas rutas.
+---
 
-## 2. Instalacion y ejecucion local
+## 📐 Marcos normativos aplicados
 
-Requisitos: Node.js >= 18.
+- **OWASP Top 10 (2021)** — A03 Injection · A05 Security Misconfiguration · A09 Logging
+- **NIST SP 800-53 Rev. 5** — SI-10 · SC-8 · SC-28 · CM-7 · AU-2
+- **NIST SP 800-61 Rev. 2** — Plan de respuesta a incidentes
+- **CWE** — CWE-89 · CWE-79 · CWE-78 · CWE-1004 · CWE-307
+- **Ley 19.628** — Protección de la Vida Privada (Chile)
+
+---
+
+## 📁 Estructura del proyecto
+
+```
+📦 auditoria_v2/
+├── 📂 src/
+│   ├── 📂 components/
+│   │   ├── Resumen.jsx          ← Resumen ejecutivo
+│   │   ├── InyeccionSQL.jsx     ← SQL Injection (H-01)
+│   │   ├── XSS.jsx              ← XSS Reflected (H-03)
+│   │   ├── Comandos.jsx         ← Command Injection (H-02)
+│   │   ├── Activos.jsx          ← Inventario activos (3.1.2)
+│   │   ├── Matriz.jsx           ← Matriz de riesgo (3.1.3)
+│   │   ├── Controles.jsx        ← Controles OWASP/NIST (3.1.4+3.1.5)
+│   │   ├── Recuperacion.jsx     ← Plan DR (3.1.6)
+│   │   ├── Prompts.jsx          ← Bitácora IA
+│   │   └── ExportPDF.jsx        ← Exportar a PDF
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── styles.css
+├── 📄 INFORME_AUDITORIA_fmv001.md
+├── vercel.json
+└── package.json
+```
+
+---
+
+## ⚡ Ejecutar localmente
 
 ```bash
+# Clonar el repositorio
+git clone https://github.com/Fernandamv96/Auditoria-Fundamentos-de-la-seguridad-de-la-informaci-n-
+
+# Instalar dependencias
 npm install
-npm run dev      # http://localhost:5173
-npm run build    # genera dist/
-npm run preview  # sirve dist/ en local
+
+# Levantar en desarrollo
+npm run dev
+
+# Build de producción
+npm run build
 ```
 
-## 3. Despliegue en GitHub + Vercel
+---
 
-### 3.1 Crear el repositorio
+<div align="center">
 
-```bash
-git init
-git add .
-git commit -m "feat: auditoria DVWA inicial"
-git branch -M main
-git remote add origin https://github.com/Fernandamv96/auditoria_fmv001
-git push -u origin main
-```
+**INACAP Valparaíso · Unidad 3 · 2025**
 
-> Sustituye `auditoria_fmv001` por el nombre real del repo.
+[![Ver sitio](https://img.shields.io/badge/🌐_Ver_presentación-auditoria--fundamentos.vercel.app-00f5d4?style=for-the-badge)](https://auditoria-fundamentos-de-la-segurid.vercel.app/)
 
-### 3.2 Conectar a Vercel
-
-1. Entra en <https://vercel.com/new>.
-2. Selecciona **Import Git Repository** y elige `Fernandamv96/auditoria_fmv001`.
-3. En la pantalla de configuracion, Vercel detecta Vite automaticamente:
-   - **Framework Preset:** Vite
-   - **Build Command:** `npm run build`
-   - **Output Directory:** `dist`
-   - **Install Command:** `npm install`
-4. Pulsa **Deploy**.
-5. Cada `git push` a `main` redespliega automaticamente.
-
-## 4. Decisiones tecnicas
-
-- **HashRouter** en `main.jsx` para que las rutas funcionen tanto en Vercel
-  (que sirve `/index.html` ante cualquier path) como en previews.
-- **`?raw` y `?url`** de Vite para importar los markdown como string y las
-  imagenes como URL publica.
-- **`react-markdown`** configurado para escapar HTML por defecto y mapear
-  las rutas relativas de las imagenes a las URLs reales mediante un
-  `imageMap` por componente.
-- **Matriz de calor** con logica pura (`PxI`) y 4 bandas de color; permite
-  filtrar por nivel y hacer hover para ver detalle.
-
-## 5. Seguridad del propio frontend
-
-- Cabeceras ya configuradas en `vercel.json` (X-Frame-Options, Referrer-Policy, etc).
-- No se inyecta HTML sin sanitizar.
-- No se exponen secretos en el cliente.
-
-## 6. Como sacar nota 7+
-
-Segun rubricas tipicas de una auditoria web academica:
-
-1. **Estructura del informe** completa (resumen + hallazgos + activos +
-   matriz + controles + recuperacion + prompts). Esta plantilla ya incluye
-   las 9 secciones requeridas.
-2. **Evidencia visual** (capturas en `img_fmv001/`). Aqui se entregan
-   placeholders profesionales; sustituye por tus capturas reales de DVWA.
-3. **CVSS calculado** (no inventado) con la calculadora oficial y razon
-   vectorial documentada.
-4. **Matriz interactiva** con logica real, no solo un PNG. Esto suma puntos
-   de "valor anadido" tecnologico.
-5. **Codigo limpio y comentado**, ESLint-friendly, sin `console.log`,
-   sin dependencias innecesarias.
-6. **Despliegue real** en Vercel con URL publica: incluirla en la portada.
-7. **Trazabilidad** de prompts IA si la rubrica lo valora (seccion 09).
+</div>
